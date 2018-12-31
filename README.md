@@ -1,7 +1,7 @@
-## AWS Cloudformation Template Builder
+# AWS Cloudformation Template Builder
 
-aws-cloudformation-template-builder contains cfn-skeleton is a command line tool and Go library that consumes the published CloudFormation specification and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types prefilled with placeholder values.
+This repository contains `cfn-skeleton`, a command line tool and Go library that consumes the published [CloudFormation specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values.
 
 ## License
 
-This library is licensed under the Apache 2.0 License. 
+This project is licensed under the Apache 2.0 License. 
