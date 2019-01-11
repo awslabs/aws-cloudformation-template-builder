@@ -5,14 +5,18 @@ import (
 	"codecommit/builders/cfn-spec-go/builder"
 	"codecommit/builders/cfn-spec-go/spec"
 	"fmt"
+	"strings"
 )
 
 func main() {
-	for name, _ := range spec.Cfn.ResourceTypes {
-		t := builder.NewTemplate(map[string]string{
-			"MyThing": name,
-		})
+	config := builder.NewTemplateConfig()
 
-		fmt.Println(format.Yaml(t))
+	for resourceType, _ := range spec.Cfn.ResourceTypes {
+		name := "My" + strings.Replace(resourceType, "::", "", -1)
+		config.Resources[name] = resourceType
 	}
+
+	t := builder.NewTemplate(config)
+
+	fmt.Println(format.Yaml(t))
 }

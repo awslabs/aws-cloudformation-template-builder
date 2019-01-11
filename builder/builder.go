@@ -4,10 +4,21 @@ import (
 	"codecommit/builders/cfn-spec-go/spec"
 )
 
-func NewTemplate(config map[string]string) map[string]interface{} {
+type TemplateConfig struct {
+	Resources                 map[string]string
+	IncludeOptionalProperties bool
+}
+
+func NewTemplateConfig() TemplateConfig {
+	return TemplateConfig{
+		Resources: make(map[string]string),
+	}
+}
+
+func NewTemplate(config TemplateConfig) map[string]interface{} {
 	// Generate resources
 	resources := make(map[string]interface{})
-	for name, resourceType := range config {
+	for name, resourceType := range config.Resources {
 		resources[name] = newResource(resourceType)
 	}
 
