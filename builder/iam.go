@@ -2,16 +2,17 @@ package builder
 
 import "codecommit/builders/cfn-spec-go/spec"
 
-type iamBuilder struct {
+type IamBuilder struct {
 	Builder
 }
 
-var Iam = iamBuilder{}
+func NewIamBuilder() IamBuilder {
+	var b IamBuilder
+	b.Spec = spec.Iam
 
-func init() {
-	Iam.Spec = spec.Iam
+	return b
 }
 
-func (b iamBuilder) Policy() interface{} {
+func (b IamBuilder) Policy() interface{} {
 	return b.newPropertyType("", "Policy")
 }

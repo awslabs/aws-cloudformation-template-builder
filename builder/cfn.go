@@ -2,17 +2,19 @@ package builder
 
 import "codecommit/builders/cfn-spec-go/spec"
 
-type cfnBuilder struct {
+type CfnBuilder struct {
 	Builder
 }
 
-var Cfn = cfnBuilder{}
+func NewCfnBuilder(includeOptional bool) CfnBuilder {
+	var b CfnBuilder
+	b.Spec = spec.Cfn
+	b.IncludeOptionalProperties = includeOptional
 
-func init() {
-	Cfn.Spec = spec.Cfn
+	return b
 }
 
-func (b cfnBuilder) Template(config map[string]string) map[string]interface{} {
+func (b CfnBuilder) Template(config map[string]string) map[string]interface{} {
 	// Generate resources
 	resources := make(map[string]interface{})
 	for name, resourceType := range config {

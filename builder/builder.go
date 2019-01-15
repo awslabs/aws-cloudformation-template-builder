@@ -18,7 +18,9 @@ func (b Builder) newResource(resourceType string) map[string]interface{} {
 	// Generate properties
 	properties := make(map[string]interface{})
 	for name, pSpec := range rSpec.Properties {
-		properties[name] = b.newProperty(resourceType, pSpec)
+		if b.IncludeOptionalProperties || pSpec.Required {
+			properties[name] = b.newProperty(resourceType, pSpec)
+		}
 	}
 
 	return map[string]interface{}{

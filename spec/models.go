@@ -36,7 +36,7 @@ type Attribute struct {
 	Type              string
 }
 
-func (p Property) GetType() string {
+func (p Property) TypeName() string {
 	if p.PrimitiveType != "" {
 		if p.PrimitiveType == "List" || p.PrimitiveType == "Map" {
 			if p.PrimitiveItemType != "" {
