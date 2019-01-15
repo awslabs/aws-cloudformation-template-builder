@@ -1,5 +1,7 @@
 package spec
 
+import "strings"
+
 type Spec struct {
 	ResourceSpecificationVersion string
 	PropertyTypes                map[string]PropertyType
@@ -50,4 +52,16 @@ func (p Property) TypeName() string {
 	}
 
 	return p.Type
+}
+
+func (s Spec) ResolveResource(suffix string) []string {
+	options := make([]string, 0)
+
+	for r, _ := range s.ResourceTypes {
+		if strings.HasSuffix(r, suffix) {
+			options = append(options, r)
+		}
+	}
+
+	return options
 }
