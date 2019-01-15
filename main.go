@@ -9,14 +9,16 @@ import (
 )
 
 func main() {
-	config := builder.NewTemplateConfig()
+	config := make(map[string]string)
 
 	for resourceType, _ := range spec.Cfn.ResourceTypes {
 		name := "My" + strings.Replace(resourceType, "::", "", -1)
-		config.Resources[name] = resourceType
+		config[name] = resourceType
 	}
 
-	t := builder.NewTemplate(config)
-
+	t := builder.Cfn.Template(config)
 	fmt.Println(format.Yaml(t))
+
+	p := builder.Iam.Policy()
+	fmt.Println(format.Yaml(p))
 }
