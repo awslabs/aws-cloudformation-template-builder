@@ -1,37 +1,20 @@
 package main
 
 import (
-	"codecommit/builders/cfn-format/format"
-	"codecommit/builders/cfn-spec-go/builder"
-	"codecommit/builders/cfn-spec-go/spec"
+	"codecommit/builders/cfn-spec-go/cmd"
 	"fmt"
-	"strings"
+	"os"
 )
 
 func main() {
-	config := make(map[string]string)
-	for resourceType, _ := range spec.Cfn.ResourceTypes {
-		name := "My" + strings.Replace(resourceType, "::", "", -1)
-		config[name] = resourceType
+	if len(os.Args) < 2 || (os.Args[1] == "-i" && len(os.Args) < 3) {
+		fmt.Fprintf(os.Stderr, "Usage: %s [-i] <resource type>\n", os.Args[0])
+		os.Exit(1)
 	}
 
-	config = map[string]string{
-		"MyBucket": "AWS::S3::Bucket",
+	if os.Args[1] == "-i" {
+		cmd.Interactive(os.Args[2:])
+	} else {
+		cmd.Build(os.Args[1:])
 	}
-
-	cfn := builder.NewCfnBuilder(false)
-	t := cfn.Template(config)
-	fmt.Println(format.Yaml(t))
-
-	/*
-		fmt.Println()
-		fmt.Println("---")
-		fmt.Println()
-
-		iam := builder.NewIamBuilder()
-		p := map[string]interface{}{
-			"PolicyDocument": iam.Policy(),
-		}
-		fmt.Println(format.Json(p))
-	*/
 }

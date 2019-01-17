@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"codecommit/builders/cfn-spec-go/menu"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func Interactive(args []string) {
 	out, err := menu.Cfn.Build("AWS::S3::Bucket")
 	if err != nil {
 		panic(err)
