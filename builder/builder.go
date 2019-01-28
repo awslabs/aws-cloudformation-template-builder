@@ -9,7 +9,7 @@ type Builder struct {
 	IncludeOptionalProperties bool
 }
 
-func (b Builder) newResource(resourceType string) map[string]interface{} {
+func (b Builder) newResource(resourceType string) (map[string]interface{}, map[string]interface{}) {
 	rSpec, ok := b.Spec.ResourceTypes[resourceType]
 	if !ok {
 		panic("No such resource type: " + resourceType)
@@ -17,19 +17,27 @@ func (b Builder) newResource(resourceType string) map[string]interface{} {
 
 	// Generate properties
 	properties := make(map[string]interface{})
+	comments := make(map[string]interface{})
 	for name, pSpec := range rSpec.Properties {
 		if b.IncludeOptionalProperties || pSpec.Required {
-			properties[name] = b.newProperty(resourceType, pSpec)
+			properties[name], comments[name] = b.newProperty(resourceType, pSpec)
 		}
 	}
 
 	return map[string]interface{}{
-		"Type":       resourceType,
-		"Properties": properties,
-	}
+			"Type":       resourceType,
+			"Properties": properties,
+		}, map[string]interface{}{
+			"Properties": comments,
+		}
 }
 
-func (b Builder) newProperty(resourceType string, pSpec spec.Property) interface{} {
+func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interface{}, string) {
+	comment := ""
+	if !pSpec.Required {
+		comment = "Optional"
+	}
+
 	// Correctly badly-formed entries
 	if pSpec.PrimitiveType == "Map" {
 		pSpec.PrimitiveType = ""
@@ -38,7 +46,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) interface
 
 	// Primitive types
 	if pSpec.PrimitiveType != "" {
-		return b.newPrimitive(pSpec.PrimitiveType)
+		return b.newPrimitive(pSpec.PrimitiveType), comment
 	}
 
 	if pSpec.Type == "List" || pSpec.Type == "Map" {
@@ -53,14 +61,14 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) interface
 		}
 
 		if pSpec.Type == "List" {
-			return []interface{}{value}
+			return []interface{}{value}, comment
 		}
 
-		return map[string]interface{}{"CHANGEME": value}
+		return map[string]interface{}{"CHANGEME": value}, comment
 	}
 
 	// Fall through to property types
-	return b.newPropertyType(resourceType, pSpec.Type)
+	return b.newPropertyType(resourceType, pSpec.Type), comment
 }
 
 func (b Builder) newPrimitive(primitiveType string) interface{} {
@@ -102,7 +110,7 @@ func (b Builder) newPropertyType(resourceType, propertyType string) interface{} 
 		if pSpec.Type == propertyType || pSpec.ItemType == propertyType {
 			properties[name] = make(map[string]interface{})
 		} else {
-			properties[name] = b.newProperty(resourceType, pSpec)
+			properties[name], _ = b.newProperty(resourceType, pSpec)
 		}
 	}
 

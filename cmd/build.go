@@ -34,6 +34,6 @@ func Build(args []string) {
 	}
 
 	b := builder.NewCfnBuilder(true)
-	t := b.Template(resources)
-	fmt.Println(format.Yaml(t))
+	t, c := b.Template(resources)
+	fmt.Println(format.YamlWithComments(t, c))
 }
