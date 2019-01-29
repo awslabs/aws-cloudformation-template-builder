@@ -9,7 +9,7 @@ type Builder struct {
 	IncludeOptionalProperties bool
 }
 
-func (b Builder) newResource(resourceType string) (map[string]interface{}, map[string]interface{}) {
+func (b Builder) newResource(resourceType string) (map[string]interface{}, map[interface{}]interface{}) {
 	rSpec, ok := b.Spec.ResourceTypes[resourceType]
 	if !ok {
 		panic("No such resource type: " + resourceType)
@@ -17,7 +17,7 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[s
 
 	// Generate properties
 	properties := make(map[string]interface{})
-	comments := make(map[string]interface{})
+	comments := make(map[interface{}]interface{})
 	for name, pSpec := range rSpec.Properties {
 		if b.IncludeOptionalProperties || pSpec.Required {
 			properties[name], comments[name] = b.newProperty(resourceType, pSpec)
@@ -27,7 +27,7 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[s
 	return map[string]interface{}{
 			"Type":       resourceType,
 			"Properties": properties,
-		}, map[string]interface{}{
+		}, map[interface{}]interface{}{
 			"Properties": comments,
 		}
 }
