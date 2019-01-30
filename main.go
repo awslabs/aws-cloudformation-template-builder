@@ -51,7 +51,7 @@ func resolveType(suffix string) string {
 
 func makeName(resourceType string) string {
 	parts := strings.Split(resourceType, "::")
-	return parts[len(parts)-1]
+	return "My" + parts[len(parts)-1]
 }
 
 func main() {
