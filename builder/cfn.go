@@ -6,10 +6,11 @@ type CfnBuilder struct {
 	Builder
 }
 
-func NewCfnBuilder(includeOptional bool) CfnBuilder {
+func NewCfnBuilder(includeOptional, buildIamPolicies bool) CfnBuilder {
 	var b CfnBuilder
 	b.Spec = spec.Cfn
 	b.IncludeOptionalProperties = includeOptional
+	b.BuildIamPolicies = buildIamPolicies
 
 	return b
 }

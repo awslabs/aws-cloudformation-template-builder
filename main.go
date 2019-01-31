@@ -22,6 +22,7 @@ var usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
 Options:
 
   -b, --bare  Produce a minimal template, omitting all optional resource properties.
+  -i, --iam   If any resource includes an IAM policy definition, populate that too.
   -j, --json  Output the template in JSON format (default: YAML).
   --help      Show this message and exit.
 `
@@ -60,6 +61,7 @@ func main() {
 	}
 
 	includeOptional := true
+	buildIamPolicies := false
 	style := "yaml"
 	resourceTypes := make([]string, 0)
 
@@ -67,6 +69,8 @@ func main() {
 	for _, arg := range os.Args[1:] {
 		if arg == "-b" || arg == "--bare" {
 			includeOptional = false
+		} else if arg == "-i" || arg == "--iam" {
+			buildIamPolicies = true
 		} else if arg == "-j" || arg == "--json" {
 			style = "json"
 		} else if arg == "--help" {
@@ -91,7 +95,7 @@ func main() {
 	}
 
 	// Generate the template
-	b := builder.NewCfnBuilder(includeOptional)
+	b := builder.NewCfnBuilder(includeOptional, buildIamPolicies)
 	t, c := b.Template(resources)
 
 	if style == "json" {

@@ -7,6 +7,13 @@ import (
 type Builder struct {
 	Spec                      spec.Spec
 	IncludeOptionalProperties bool
+	BuildIamPolicies          bool
+}
+
+var iamBuilder IamBuilder
+
+func init() {
+	iamBuilder = NewIamBuilder()
 }
 
 func (b Builder) newResource(resourceType string) (map[string]interface{}, map[interface{}]interface{}) {
@@ -20,7 +27,11 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 	comments := make(map[interface{}]interface{})
 	for name, pSpec := range rSpec.Properties {
 		if b.IncludeOptionalProperties || pSpec.Required {
-			properties[name], comments[name] = b.newProperty(resourceType, pSpec)
+			if b.BuildIamPolicies && (name == "PolicyDocument" || name == "AssumeRolePolicyDocument") {
+				properties[name], comments[name] = iamBuilder.Policy()
+			} else {
+				properties[name], comments[name] = b.newProperty(resourceType, pSpec)
+			}
 		}
 	}
 
@@ -122,7 +133,9 @@ func (b Builder) newPropertyType(resourceType, propertyType string) (interface{}
 			comments[name] = "Optional"
 		}
 
-		if pSpec.Type == propertyType || pSpec.ItemType == propertyType {
+		if b.BuildIamPolicies && (name == "PolicyDocument" || name == "AssumeRolePolicyDocument") {
+			properties[name], comments[name] = iamBuilder.Policy()
+		} else if pSpec.Type == propertyType || pSpec.ItemType == propertyType {
 			properties[name] = make(map[string]interface{})
 		} else {
 			properties[name], _ = b.newProperty(resourceType, pSpec)
