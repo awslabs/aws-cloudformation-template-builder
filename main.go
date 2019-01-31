@@ -2,8 +2,8 @@ package main
 
 import (
 	"codecommit/builders/cfn-format/format"
-	"codecommit/builders/cfn-spec-go/builder"
-	"codecommit/builders/cfn-spec-go/spec"
+	"codecommit/builders/cfn-skeleton/builder"
+	"codecommit/builders/cfn-skeleton/spec"
 	"fmt"
 	"os"
 	"sort"

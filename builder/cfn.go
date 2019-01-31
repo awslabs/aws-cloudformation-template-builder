@@ -1,6 +1,6 @@
 package builder
 
-import "codecommit/builders/cfn-spec-go/spec"
+import "codecommit/builders/cfn-skeleton/spec"
 
 type CfnBuilder struct {
 	Builder
