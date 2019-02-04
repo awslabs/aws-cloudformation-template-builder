@@ -50,9 +50,9 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 
 func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interface{}, map[interface{}]interface{}) {
 	// Correct badly-formed entries
-	if pSpec.PrimitiveType == "Map" {
+	if pSpec.PrimitiveType == spec.TypeMap {
 		pSpec.PrimitiveType = ""
-		pSpec.Type = "Map"
+		pSpec.Type = spec.TypeMap
 	}
 
 	comments := make(map[interface{}]interface{})
@@ -65,7 +65,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 		return b.newPrimitive(pSpec.PrimitiveType), comments
 	}
 
-	if pSpec.Type == "List" || pSpec.Type == "Map" {
+	if pSpec.Type == spec.TypeList || pSpec.Type == spec.TypeMap {
 		var value interface{}
 		var subComments map[interface{}]interface{}
 
@@ -77,7 +77,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 			value = "CHANGEME"
 		}
 
-		if pSpec.Type == "List" {
+		if pSpec.Type == spec.TypeList {
 			if subComments != nil {
 				comments[0] = subComments
 			}

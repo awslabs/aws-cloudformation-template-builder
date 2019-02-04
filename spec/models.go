@@ -2,6 +2,12 @@ package spec
 
 import "strings"
 
+const (
+	TypeEmpty = ""
+	TypeMap   = "Map"
+	TypeList  = "List"
+)
+
 type Spec struct {
 	ResourceSpecificationVersion string
 	PropertyTypes                map[string]PropertyType
@@ -39,8 +45,8 @@ type Attribute struct {
 }
 
 func (p Property) TypeName() string {
-	if p.PrimitiveType != "" {
-		if p.PrimitiveType == "List" || p.PrimitiveType == "Map" {
+	if p.PrimitiveType != TypeEmpty {
+		if p.PrimitiveType == TypeList || p.PrimitiveType == TypeMap {
 			if p.PrimitiveItemType != "" {
 				return p.PrimitiveType + "/" + p.PrimitiveItemType
 			}
