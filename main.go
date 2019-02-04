@@ -10,6 +10,11 @@ import (
 	"strings"
 )
 
+const (
+	styleJSON = "json"
+	styleYAML = "yaml"
+)
+
 var usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
 
   cfn-skeleton is a tool that generates skeleton CloudFormation templates
@@ -62,7 +67,7 @@ func main() {
 
 	includeOptional := true
 	buildIamPolicies := false
-	style := "yaml"
+	style := styleYAML
 	resourceTypes := make([]string, 0)
 
 	// Parse params
@@ -72,7 +77,7 @@ func main() {
 		} else if arg == "-i" || arg == "--iam" {
 			buildIamPolicies = true
 		} else if arg == "-j" || arg == "--json" {
-			style = "json"
+			style = styleJSON
 		} else if arg == "--help" {
 			die()
 		} else if arg[0] == '-' {
@@ -98,7 +103,7 @@ func main() {
 	b := builder.NewCfnBuilder(includeOptional, buildIamPolicies)
 	t, c := b.Template(resources)
 
-	if style == "json" {
+	if style == styleJSON {
 		fmt.Println(format.JsonWithComments(t, c))
 	} else {
 		fmt.Println(format.YamlWithComments(t, c))
