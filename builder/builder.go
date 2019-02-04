@@ -7,6 +7,7 @@ import (
 const (
 	PolicyDocument           = "PolicyDocument"
 	AssumeRolePolicyDocument = "AssumeRolePolicyDocument"
+	OptionalTag              = "Optional"
 )
 
 type Builder struct {
@@ -57,7 +58,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 
 	comments := make(map[interface{}]interface{})
 	if !pSpec.Required {
-		comments[""] = "Optional"
+		comments[""] = OptionalTag
 	}
 
 	// Primitive types
@@ -135,7 +136,7 @@ func (b Builder) newPropertyType(resourceType, propertyType string) (interface{}
 	properties := make(map[string]interface{})
 	for name, pSpec := range ptSpec.Properties {
 		if !pSpec.Required {
-			comments[name] = "Optional"
+			comments[name] = OptionalTag
 		}
 
 		if b.BuildIamPolicies && (name == PolicyDocument || name == AssumeRolePolicyDocument) {
