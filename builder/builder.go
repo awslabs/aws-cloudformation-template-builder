@@ -53,7 +53,7 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interface{}, map[interface{}]interface{}) {
 	// Correct badly-formed entries
 	if pSpec.PrimitiveType == spec.TypeMap {
-		pSpec.PrimitiveType = ""
+		pSpec.PrimitiveType = spec.TypeEmpty
 		pSpec.Type = spec.TypeMap
 	}
 
@@ -63,7 +63,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 	}
 
 	// Primitive types
-	if pSpec.PrimitiveType != "" {
+	if pSpec.PrimitiveType != spec.TypeEmpty {
 		return b.newPrimitive(pSpec.PrimitiveType), comments
 	}
 
@@ -71,9 +71,9 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 		var value interface{}
 		var subComments map[interface{}]interface{}
 
-		if pSpec.PrimitiveItemType != "" {
+		if pSpec.PrimitiveItemType != spec.TypeEmpty {
 			value = b.newPrimitive(pSpec.PrimitiveItemType)
-		} else if pSpec.ItemType != "" {
+		} else if pSpec.ItemType != spec.TypeEmpty {
 			value, subComments = b.newPropertyType(resourceType, pSpec.ItemType)
 		} else {
 			value = ChangeMeTag
