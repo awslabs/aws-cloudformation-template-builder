@@ -8,6 +8,7 @@ const (
 	PolicyDocument           = "PolicyDocument"
 	AssumeRolePolicyDocument = "AssumeRolePolicyDocument"
 	OptionalTag              = "Optional"
+	ChangeMeTag              = "CHANGEME"
 )
 
 type Builder struct {
@@ -75,7 +76,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 		} else if pSpec.ItemType != "" {
 			value, subComments = b.newPropertyType(resourceType, pSpec.ItemType)
 		} else {
-			value = "CHANGEME"
+			value = ChangeMeTag
 		}
 
 		if pSpec.Type == spec.TypeList {
@@ -87,10 +88,10 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 		}
 
 		if subComments != nil {
-			comments["CHANGEME"] = subComments
+			comments[ChangeMeTag] = subComments
 		}
 
-		return map[string]interface{}{"CHANGEME": value}, comments
+		return map[string]interface{}{ChangeMeTag: value}, comments
 	}
 
 	// Fall through to property types
@@ -100,7 +101,7 @@ func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interfac
 func (b Builder) newPrimitive(primitiveType string) interface{} {
 	switch primitiveType {
 	case "String":
-		return "CHANGEME"
+		return ChangeMeTag
 	case "Integer":
 		return 0
 	case "Double":
