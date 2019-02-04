@@ -15,7 +15,7 @@ const (
 	styleYAML = "yaml"
 )
 
-var usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
+const usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
 
   cfn-skeleton is a tool that generates skeleton CloudFormation templates
   containing definitions for the resource types that you specify.
