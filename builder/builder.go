@@ -4,6 +4,11 @@ import (
 	"codecommit/builders/cfn-skeleton/spec"
 )
 
+const (
+	PolicyDocument           = "PolicyDocument"
+	AssumeRolePolicyDocument = "AssumeRolePolicyDocument"
+)
+
 type Builder struct {
 	Spec                      spec.Spec
 	IncludeOptionalProperties bool
@@ -27,7 +32,7 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 	comments := make(map[interface{}]interface{})
 	for name, pSpec := range rSpec.Properties {
 		if b.IncludeOptionalProperties || pSpec.Required {
-			if b.BuildIamPolicies && (name == "PolicyDocument" || name == "AssumeRolePolicyDocument") {
+			if b.BuildIamPolicies && (name == PolicyDocument || name == AssumeRolePolicyDocument) {
 				properties[name], comments[name] = iamBuilder.Policy()
 			} else {
 				properties[name], comments[name] = b.newProperty(resourceType, pSpec)
@@ -133,7 +138,7 @@ func (b Builder) newPropertyType(resourceType, propertyType string) (interface{}
 			comments[name] = "Optional"
 		}
 
-		if b.BuildIamPolicies && (name == "PolicyDocument" || name == "AssumeRolePolicyDocument") {
+		if b.BuildIamPolicies && (name == PolicyDocument || name == AssumeRolePolicyDocument) {
 			properties[name], comments[name] = iamBuilder.Policy()
 		} else if pSpec.Type == propertyType || pSpec.ItemType == propertyType {
 			properties[name] = make(map[string]interface{})
