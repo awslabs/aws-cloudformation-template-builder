@@ -22,5 +22,6 @@ Options:
 
   -b, --bare  Produce a minimal template, omitting all optional resource properties.
   -j, --json  Output the template in JSON format (default: YAML).
+  -i, --iam   If any resource includes an IAM policy definition, populate that too.
   --help      Show this message and exit.
 ```
