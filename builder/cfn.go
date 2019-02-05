@@ -15,6 +15,8 @@ func NewCfnBuilder(includeOptional, buildIamPolicies bool) CfnBuilder {
 	return b
 }
 
+// Template produces a CloudFormation template for the
+// resources in the config map
 func (b CfnBuilder) Template(config map[string]string) (map[string]interface{}, map[interface{}]interface{}) {
 	// Generate resources
 	resources := make(map[string]interface{})
