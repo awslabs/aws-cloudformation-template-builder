@@ -9,7 +9,10 @@ import (
 const cfnSpecFn = "CloudFormationResourceSpecification.json"
 const iamSpecFn = "IamSpecification.json"
 
+// Cfn is a representation of the CloudFormation specification
 var Cfn Spec
+
+// Iam is a representation fo the Iam specification
 var Iam Spec
 
 func load(fn string, s *Spec) {
