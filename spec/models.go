@@ -8,6 +8,7 @@ const (
 	TypeList  = "List"
 )
 
+// Spec is a representation of the CloudFormation specification document
 type Spec struct {
 	ResourceSpecificationVersion string
 	PropertyTypes                map[string]PropertyType
@@ -60,6 +61,8 @@ func (p Property) TypeName() string {
 	return p.Type
 }
 
+// ResolveResource returns a list of possible Resource names for
+// the provided suffix
 func (s Spec) ResolveResource(suffix string) []string {
 	options := make([]string, 0)
 
