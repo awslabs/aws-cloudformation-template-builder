@@ -15,11 +15,15 @@ type Spec struct {
 	ResourceTypes                map[string]ResourceType
 }
 
+// PropertyType represents a propertytype node
+// in the CloudFormation specification
 type PropertyType struct {
 	Documentation string
 	Properties    map[string]Property
 }
 
+// ResourceType represents a resourcetype node
+// in the CloudFormation specification
 type ResourceType struct {
 	Attributes           map[string]Attribute
 	Documentation        string
