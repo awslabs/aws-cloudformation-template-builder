@@ -42,7 +42,7 @@ func main() {
 
 	// Make resourceFuncs
 
-	for name, _ := range resources {
+	for name := range resources {
 		generateResource(name)
 
 	}
@@ -90,7 +90,8 @@ func getResourceType(name string) (spec.ResourceType, error) {
 func writeResourceFile(name string, rt spec.ResourceType) error {
 
 	cleanedName := nameFromAWSType(name)
-	out, err := os.Create(cleanedName + ".go")
+
+	out, err := os.Create("../spec/types/" + cleanedName + ".go")
 	defer out.Close()
 	if err != nil {
 		panic(err)
