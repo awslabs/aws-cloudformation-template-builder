@@ -4,12 +4,14 @@
 package template
 import "codecommit/builders/cfn-skeleton/spec"
 
-func {{ .Name }}Resource() spec.ResourceType {
-    return {{ .RTDefinition }}
-}
+{{ template "property" .}}
+{{ end }}
 
+
+{{ define "property" }}
 func {{ .Name }}Property() spec.PropertyType {
     return {{ .PTDefinition }}
 }
-
 {{ end }}
+
+

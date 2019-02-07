@@ -27,7 +27,10 @@ var (
 	propertyFuncs map[string]PropertyFunc
 )
 
-var exampleResource = "AWS::S3::Bucket"
+const (
+	resourceTemplate = "resource.tmpl"
+	propertyTemplate = "property.tmpl"
+)
 
 func main() {
 	// Make file of example resource
@@ -93,17 +96,15 @@ func writeResourceFile(name string, rt spec.ResourceType) error {
 		panic(err)
 	}
 
-	t := template.Must(template.ParseFiles("template.txt"))
+	t := template.Must(template.ParseFiles(resourceTemplate))
 	err = t.ExecuteTemplate(out, "template", struct {
 		Name         string
 		RTDefinition interface{}
-		PTDefinition interface{}
 	}{
 		Name: cleanedName,
 
 		// Use %#v directive to output the entire struct in parseable format
 		RTDefinition: fmt.Sprintf("%#v", rt),
-		PTDefinition: fmt.Sprintf("\"Not yet implemented\""),
 	})
 
 	if err != nil {
