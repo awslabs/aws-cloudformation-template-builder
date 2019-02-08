@@ -30,8 +30,8 @@ var (
 
 // Filename of the templates used
 const (
-	resourceTemplate = "resource.tmpl"
-	propertyTemplate = "property.tmpl"
+	resourceTemplate = "generate/resource.tmpl"
+	propertyTemplate = "generate/property.tmpl"
 )
 
 func main() {
@@ -119,7 +119,7 @@ func build(name string, templateName string, input interface{}) ([]byte, error) 
 
 // writeFile writes the provided byte sequence to a file of the provided name
 func writeFile(name string, b []byte) error {
-	out, err := os.Create("../spec/types/" + name + ".go")
+	out, err := os.Create("spec/types/" + name + ".go")
 	defer out.Close()
 	if err != nil {
 		return err

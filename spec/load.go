@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-const cfnSpecFn = "../CloudFormationResourceSpecification.json"
-const iamSpecFn = "../IamSpecification.json"
+const cfnSpecFn = "CloudFormationResourceSpecification.json"
+const iamSpecFn = "IamSpecification.json"
 
 // Cfn is a representation of the CloudFormation specification
 var Cfn Spec
