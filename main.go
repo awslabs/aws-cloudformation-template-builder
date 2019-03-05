@@ -3,11 +3,8 @@ package main
 import (
 	"codecommit/builders/cfn-format/format"
 	"codecommit/builders/cfn-skeleton/builder"
-	"codecommit/builders/cfn-skeleton/spec"
 	"fmt"
 	"os"
-	"sort"
-	"strings"
 )
 
 const (
@@ -37,34 +34,12 @@ func die() {
 	os.Exit(1)
 }
 
-func resolveType(suffix string) string {
-	options := spec.Cfn.ResolveResource(suffix)
-
-	if len(options) == 0 {
-		fmt.Fprintf(os.Stderr, "No resource type found matching '%s'\n", suffix)
-		os.Exit(1)
-	} else if len(options) != 1 {
-		fmt.Fprintf(os.Stderr, "Ambiguous resource type '%s'; could be any of:\n", suffix)
-		sort.Strings(options)
-		for _, option := range options {
-			fmt.Fprintf(os.Stderr, "  %s\n", option)
-		}
-		os.Exit(1)
-	}
-
-	return options[0]
-}
-
-func makeName(resourceType string) string {
-	parts := strings.Split(resourceType, "::")
-	return "My" + parts[len(parts)-1]
-}
-
 func main() {
 	if len(os.Args) < 2 {
 		die()
 	}
 
+	// TODO: Use a CLI library
 	includeOptional := true
 	buildIamPolicies := false
 	style := styleYAML
@@ -72,17 +47,18 @@ func main() {
 
 	// Parse params
 	for _, arg := range os.Args[1:] {
-		if arg == "-b" || arg == "--bare" {
+		switch {
+		case arg == "-b" || arg == "--bare":
 			includeOptional = false
-		} else if arg == "-i" || arg == "--iam" {
+		case arg == "-i" || arg == "--iam":
 			buildIamPolicies = true
-		} else if arg == "-j" || arg == "--json" {
+		case arg == "-j" || arg == "--json":
 			style = styleJSON
-		} else if arg == "--help" {
+		case arg == "--help":
 			die()
-		} else if arg[0] == '-' {
+		case arg[0] == '-':
 			die()
-		} else {
+		default:
 			resourceTypes = append(resourceTypes, arg)
 		}
 	}
@@ -93,16 +69,13 @@ func main() {
 	}
 
 	// Resolve resource types
-	resources := make(map[string]string)
-	for _, r := range resourceTypes {
-		r = resolveType(r)
-		resources[makeName(r)] = r
-	}
+	resources := resolveResources(resourceTypes)
 
 	// Generate the template
 	b := builder.NewCfnBuilder(includeOptional, buildIamPolicies)
 	t, c := b.Template(resources)
 
+	// Output the result
 	if style == styleJSON {
 		fmt.Println(format.JsonWithComments(t, c))
 	} else {
