@@ -1,10 +1,11 @@
 package main
 
 import (
-	"codecommit/builders/cfn-format/format"
 	"codecommit/builders/cfn-skeleton/builder"
 	"fmt"
 	"os"
+
+	"github.com/awslabs/aws-cloudformation-template-formatter/format"
 )
 
 const (
