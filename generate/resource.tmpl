@@ -10,7 +10,7 @@ import "github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 {{ end }}
 
 {{ define "resource" }} 
-func {{ .Name }}Resource() cf.ResourceType {
+func {{ .Name }}resource() cf.ResourceType {
     return {{ .ReturnVal }}
 }
 {{ end }}
