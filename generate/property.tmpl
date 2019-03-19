@@ -10,7 +10,7 @@ import "github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 {{ end }}
 
 {{ define "property" }} 
-func {{ .Name }}Property() cf.PropertyType {
+func {{ .Name }}property() cf.PropertyType {
     return {{ .ReturnVal }}
 }
 {{ end }}
