@@ -1,6 +1,8 @@
-package spec
+package cf
 
-import "strings"
+import (
+	"strings"
+)
 
 const (
 	TypeEmpty = ""
@@ -8,7 +10,7 @@ const (
 	TypeList  = "List"
 )
 
-// Spec is a representation of the CloudFormation specification document
+// Spec is a representation of a CloudFormation policy structure
 type Spec struct {
 	ResourceSpecificationVersion string
 	PropertyTypes                map[string]PropertyType
@@ -50,8 +52,8 @@ type Attribute struct {
 }
 
 func (p Property) TypeName() string {
-	if p.PrimitiveType != TypeEmpty {
-		if p.PrimitiveType == TypeList || p.PrimitiveType == TypeMap {
+	if p.PrimitiveType != "" {
+		if p.PrimitiveType == "List" || p.PrimitiveType == "Map" {
 			if p.PrimitiveItemType != "" {
 				return p.PrimitiveType + "/" + p.PrimitiveItemType
 			}
@@ -64,6 +66,14 @@ func (p Property) TypeName() string {
 
 	return p.Type
 }
+
+// PropertyFunc is a function that returns a PropertyType
+// of the named function
+type PropertyFunc func() PropertyType
+
+// ResourceFunc is a function that returns a ResourceType
+// of the named function
+type ResourceFunc func() ResourceType
 
 // ResolveResource returns a list of possible Resource names for
 // the provided suffix

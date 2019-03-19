@@ -1,6 +1,7 @@
 package spec
 
 import (
+	"github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -10,12 +11,12 @@ const cfnSpecFn = "CloudFormationResourceSpecification.json"
 const iamSpecFn = "IamSpecification.json"
 
 // Cfn is a representation of the CloudFormation specification
-var Cfn Spec
+var Cfn cf.Spec
 
 // Iam is a representation fo the Iam specification
-var Iam Spec
+var Iam cf.Spec
 
-func load(fn string, s *Spec) {
+func load(fn string, s *cf.Spec) {
 	f, err := os.Open(fn)
 	if err != nil {
 		panic(err.Error())
