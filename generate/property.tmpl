@@ -5,12 +5,12 @@
 package types
 import "github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 
-{{ template "resource" .}}
+{{ template "property" .}}
 
 {{ end }}
 
-{{ define "resource" }} 
-func {{ .Name }}Resource() cf.ResourceType {
+{{ define "property" }} 
+func {{ .Name }}Property() cf.PropertyType {
     return {{ .ReturnVal }}
 }
 {{ end }}
