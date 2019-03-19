@@ -11,7 +11,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/awslabs/aws-cloudformation-template-builder/spec"
 	"github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 )
 
@@ -29,8 +28,8 @@ type funcs struct {
 
 func main() {
 
-	resources := spec.Cfn.ResourceTypes
-	properties := spec.Cfn.PropertyTypes
+	resources := Cfn.ResourceTypes
+	properties := Cfn.PropertyTypes
 
 	resourceFuncs := []funcs{}
 	// Make resourceFuncs
@@ -170,7 +169,7 @@ func nameFromAWSType(name string) string {
 // cannot find the type, it will return an error and an empty
 // spec.ResourceType
 func getResourceType(name string) (cf.ResourceType, error) {
-	resource, ok := spec.Cfn.ResourceTypes[name]
+	resource, ok := Cfn.ResourceTypes[name]
 	if !ok {
 		return cf.ResourceType{}, errors.New("Cannot resolve resource name: " + name)
 	}
@@ -181,7 +180,7 @@ func getResourceType(name string) (cf.ResourceType, error) {
 // If it cannot find the type, it will return an error and an empty
 // spec.PropertyType
 func getPropertyType(name string) (cf.PropertyType, error) {
-	property, ok := spec.Cfn.PropertyTypes[name]
+	property, ok := Cfn.PropertyTypes[name]
 	if !ok {
 		return cf.PropertyType{}, errors.New("Cannot resolve property name: " + name)
 	}
