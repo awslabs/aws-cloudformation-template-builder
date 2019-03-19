@@ -1,7 +1,8 @@
 package builder
 
 import (
-	"codecommit/builders/cfn-skeleton/spec"
+	"github.com/awslabs/aws-cloudformation-template-builder/spec"
+	"github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 )
 
 const (
@@ -12,7 +13,7 @@ const (
 )
 
 type Builder struct {
-	Spec                      spec.Spec
+	Spec                      cf.Spec
 	IncludeOptionalProperties bool
 	BuildIamPolicies          bool
 }
@@ -50,7 +51,7 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 		}
 }
 
-func (b Builder) newProperty(resourceType string, pSpec spec.Property) (interface{}, map[interface{}]interface{}) {
+func (b Builder) newProperty(resourceType string, pSpec cf.Property) (interface{}, map[interface{}]interface{}) {
 	// Correct badly-formed entries
 	if pSpec.PrimitiveType == spec.TypeMap {
 		pSpec.PrimitiveType = spec.TypeEmpty
@@ -120,7 +121,7 @@ func (b Builder) newPrimitive(primitiveType string) interface{} {
 }
 
 func (b Builder) newPropertyType(resourceType, propertyType string) (interface{}, map[interface{}]interface{}) {
-	var ptSpec spec.PropertyType
+	var ptSpec cf.PropertyType
 	var ok bool
 
 	ptSpec, ok = b.Spec.PropertyTypes[propertyType]

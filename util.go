@@ -1,11 +1,12 @@
 package main
 
 import (
-	"codecommit/builders/cfn-skeleton/spec"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/awslabs/aws-cloudformation-template-builder/spec"
 )
 
 func resolveType(suffix string) string {
