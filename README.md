@@ -57,6 +57,8 @@ Resources:
 
 To output JSON, use the `-j` or `--json` flag.
 
+> Note that JSON output will include comments that help you identify optional properties of CloudFormation resources; however, comments are not supported in the [JSON specification](http://www.json.org/) and will be rejected by AWS CloudFormation. Once you have finished editing your template, ensure that you remove all comments.
+
 ```console
 
 cfn-skeleton -b -j Bucket
