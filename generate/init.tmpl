@@ -8,10 +8,15 @@ import (
 	"github.com/awslabs/aws-cloudformation-template-builder/spec/types"
 )
 
+var (
+    properties map[string]cf.PropertyType
+    resources  map[string]cf.ResourceType
+)
+
 func init() {
     // Make maps
-    Properties := make(map[string]cf.PropertyType)
-    Resources := make(map[string]cf.ResourceType)
+    properties = make(map[string]cf.PropertyType)
+    resources  = make(map[string]cf.ResourceType)
 
     // Register property and resource funcs
     {{ range .Resources }}
@@ -25,11 +30,11 @@ func init() {
 {{ end }}
 
 {{ define "registerProp" }}
-Properties["{{ .Name }}"] = types.{{ .Fun }}Property()
+properties["{{ .Name }}"] = types.{{ .Fun }}Property()
 {{ end }}
 
 {{ define "registerResources" }}
-Resources["{{ .Name }}"] = types.{{ .Fun }}Resource()
+resources["{{ .Name }}"] = types.{{ .Fun }}Resource()
 {{ end }}
 
 
