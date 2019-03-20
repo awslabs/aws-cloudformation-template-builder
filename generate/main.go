@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -24,6 +25,22 @@ const (
 type funcs struct {
 	Name string
 	Fun  string
+}
+
+// byName implements the sort interface
+// for a slice of funcs
+type byName []funcs
+
+func (b byName) Less(i, j int) bool {
+	return b[i].Name < b[j].Name
+}
+
+func (b byName) Len() int {
+	return len(b)
+}
+
+func (b byName) Swap(i, j int) {
+	b[i], b[j] = b[j], b[i]
 }
 
 func main() {
@@ -56,6 +73,11 @@ func buildSpec(specName string, s cf.Spec) {
 		fun := generateProperty(pt)
 		propertyFuncs = append(propertyFuncs, funcs{pt, fun})
 	}
+
+	// Sort ResourceFuncs and PropertyFuncs to ensure
+	// init files are consist order
+	sort.Sort(byName(resourceFuncs))
+	sort.Sort(byName(propertyFuncs))
 
 	// Make init() funcs
 	generateInit(specName, resourceSpecificationVersion, resourceFuncs, propertyFuncs)
