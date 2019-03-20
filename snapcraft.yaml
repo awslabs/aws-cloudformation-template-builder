@@ -1,0 +1,25 @@
+name: cfn-skeleton
+version: git
+summary: Generates skeleton AWS CloudFormation templates.
+description: >
+  cfn-skeleton is a command line tool that consumes the published
+  AWS CloudFormation specification and generates skeleton CloudFormation
+  templates with mandatory and optional parameters of chosen resource
+  types pre-filled with placeholder values. 
+
+license: Apache-2.0
+
+base: core18
+
+grade: stable
+confinement: strict
+
+parts:
+  cfn-skeleton:
+    source: .
+    plugin: go
+    go-importpath: github.com/awslabs/aws-cloudformation-template-builder
+
+apps:
+  cfn-skeleton:
+    command: aws-cloudformation-template-builder
