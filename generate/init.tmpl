@@ -4,38 +4,32 @@
 // Do not edit by hand.
 package spec
 import (
-    "github.com/awslabs/aws-cloudformation-template-builder/spec"
+    "github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 	"github.com/awslabs/aws-cloudformation-template-builder/spec/types"
 )
 
 var (
-    properties map[string]cf.PropertyType
-    resources  map[string]cf.ResourceType
+    {{.SpecName}}Properties                      map[string]cf.PropertyType
+    {{.SpecName}}Resources                       map[string]cf.ResourceType
+    {{.SpecName}}ResourceSpecificationVersion    string
 )
 
-func init() {
+func {{.SpecName}}Init() {
     // Make maps
-    properties = make(map[string]cf.PropertyType)
-    resources  = make(map[string]cf.ResourceType)
+    {{ .SpecName }}Properties = make(map[string]cf.PropertyType)
+    {{ .SpecName }}Resources  = make(map[string]cf.ResourceType)
 
     // Register property and resource funcs
     {{ range .Resources }}
-    {{template "registerResources" . -}}
+    {{ $.SpecName }}Resources["{{ .Name }}"] = types.{{ .Fun }}Resource()
     {{- end }}
 
-    {{ range .Properties }}
-    {{template "registerProp" . -}}
+    {{ range .Properties}}
+    {{ $.SpecName }}Properties["{{ .Name }}"] = types.{{ .Fun }}Property()
     {{- end }}
 }
 {{ end }}
 
-{{ define "registerProp" }}
-properties["{{ .Name }}"] = types.{{ .Fun }}Property()
-{{ end }}
-
-{{ define "registerResources" }}
-resources["{{ .Name }}"] = types.{{ .Fun }}Resource()
-{{ end }}
 
 
 
