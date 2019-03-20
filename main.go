@@ -1,10 +1,10 @@
 package main
 
 import (
-	"codecommit/builders/cfn-skeleton/builder"
 	"fmt"
 	"os"
 
+	"github.com/awslabs/aws-cloudformation-template-builder/builder"
 	"github.com/awslabs/aws-cloudformation-template-formatter/format"
 )
 

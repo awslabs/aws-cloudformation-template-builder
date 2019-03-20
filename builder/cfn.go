@@ -1,6 +1,6 @@
 package builder
 
-import "codecommit/builders/cfn-skeleton/spec"
+import "github.com/awslabs/aws-cloudformation-template-builder/spec"
 
 type CfnBuilder struct {
 	Builder
