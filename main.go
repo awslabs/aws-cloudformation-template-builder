@@ -6,11 +6,8 @@ import (
 
 	"github.com/awslabs/aws-cloudformation-template-builder/builder"
 	"github.com/awslabs/aws-cloudformation-template-formatter/format"
-)
-
-const (
-	styleJSON = "json"
-	styleYAML = "yaml"
+	//Drop-in replacement for flag that supports POSIX style flags
+	flag "github.com/spf13/pflag"
 )
 
 const usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
@@ -30,55 +27,35 @@ Options:
   --help      Show this message and exit.
 `
 
+var bareFlag bool
+var iamFlag bool
+var jsonFlag bool
+
+func init() {
+	flag.BoolVarP(&bareFlag, "bare", "b", false, "Produce a minimal template, omitting all optional resource properties.")
+	flag.BoolVarP(&iamFlag, "iam", "i", false, "If any resource includes an IAM policy definition, populate that too.")
+	flag.BoolVarP(&jsonFlag, "json", "j", false, "Output the template in JSON format (default: YAML).")
+}
+
 func die() {
 	fmt.Fprint(os.Stderr, usage)
 	os.Exit(1)
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		die()
-	}
-
-	// TODO: Use a CLI library
-	includeOptional := true
-	buildIamPolicies := false
-	style := styleYAML
-	resourceTypes := make([]string, 0)
-
-	// Parse params
-	for _, arg := range os.Args[1:] {
-		switch {
-		case arg == "-b" || arg == "--bare":
-			includeOptional = false
-		case arg == "-i" || arg == "--iam":
-			buildIamPolicies = true
-		case arg == "-j" || arg == "--json":
-			style = styleJSON
-		case arg == "--help":
-			die()
-		case arg[0] == '-':
-			die()
-		default:
-			resourceTypes = append(resourceTypes, arg)
-		}
-	}
-
-	// Refuse to build an empty template?
+	flag.Parse()
+	//Get whatever's left after the flags have been parsed
+	resourceTypes := flag.Args()
 	if len(resourceTypes) == 0 {
 		die()
 	}
-
-	// Resolve resource types
 	resources := resolveResources(resourceTypes)
-
-	// Generate the template
-	b := builder.NewCfnBuilder(includeOptional, buildIamPolicies)
+	//build the template
+	b := builder.NewCfnBuilder(bareFlag, iamFlag)
 	t, c := b.Template(resources)
-
-	// Output the result
-	if style == styleJSON {
+	if jsonFlag {
 		fmt.Println(format.JsonWithComments(t, c))
+		// Output YAML which is the default
 	} else {
 		fmt.Println(format.YamlWithComments(t, c))
 	}
