@@ -1,3 +1,4 @@
+//go:generate generate
 package main
 
 import (
