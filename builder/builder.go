@@ -1,7 +1,6 @@
 package builder
 
 import (
-	"github.com/awslabs/aws-cloudformation-template-builder/spec"
 	"github.com/awslabs/aws-cloudformation-template-builder/spec/cf"
 )
 
@@ -53,9 +52,9 @@ func (b Builder) newResource(resourceType string) (map[string]interface{}, map[i
 
 func (b Builder) newProperty(resourceType string, pSpec cf.Property) (interface{}, map[interface{}]interface{}) {
 	// Correct badly-formed entries
-	if pSpec.PrimitiveType == spec.TypeMap {
-		pSpec.PrimitiveType = spec.TypeEmpty
-		pSpec.Type = spec.TypeMap
+	if pSpec.PrimitiveType == cf.TypeMap {
+		pSpec.PrimitiveType = cf.TypeEmpty
+		pSpec.Type = cf.TypeMap
 	}
 
 	comments := make(map[interface{}]interface{})
@@ -64,23 +63,23 @@ func (b Builder) newProperty(resourceType string, pSpec cf.Property) (interface{
 	}
 
 	// Primitive types
-	if pSpec.PrimitiveType != spec.TypeEmpty {
+	if pSpec.PrimitiveType != cf.TypeEmpty {
 		return b.newPrimitive(pSpec.PrimitiveType), comments
 	}
 
-	if pSpec.Type == spec.TypeList || pSpec.Type == spec.TypeMap {
+	if pSpec.Type == cf.TypeList || pSpec.Type == cf.TypeMap {
 		var value interface{}
 		var subComments map[interface{}]interface{}
 
-		if pSpec.PrimitiveItemType != spec.TypeEmpty {
+		if pSpec.PrimitiveItemType != cf.TypeEmpty {
 			value = b.newPrimitive(pSpec.PrimitiveItemType)
-		} else if pSpec.ItemType != spec.TypeEmpty {
+		} else if pSpec.ItemType != cf.TypeEmpty {
 			value, subComments = b.newPropertyType(resourceType, pSpec.ItemType)
 		} else {
 			value = ChangeMeTag
 		}
 
-		if pSpec.Type == spec.TypeList {
+		if pSpec.Type == cf.TypeList {
 			if subComments != nil {
 				comments[0] = subComments
 			}
