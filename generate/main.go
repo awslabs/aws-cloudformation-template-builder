@@ -27,9 +27,19 @@ type funcs struct {
 }
 
 func main() {
+	buildSpec("cfn", Cfn)
+	buildSpec("iam", Iam)
 
-	resources := Cfn.ResourceTypes
-	properties := Cfn.PropertyTypes
+}
+
+// buildSpec takes a CloudFormation specification (either CF or IAM)
+// For each property and resource, it generates a function that returns
+// the respective property or resource
+
+func buildSpec(specName string, s cf.Spec) {
+	resources := s.ResourceTypes
+	properties := s.PropertyTypes
+	resourceSpecificationVersion := s.ResourceSpecificationVersion
 
 	resourceFuncs := []funcs{}
 	// Make resourceFuncs
@@ -40,34 +50,37 @@ func main() {
 	}
 
 	propertyFuncs := []funcs{}
+
 	// Make propertyFuncs
 	for pt := range properties {
 		fun := generateProperty(pt)
 		propertyFuncs = append(propertyFuncs, funcs{pt, fun})
 	}
 
-	// Make init() func
-	generateInit(resourceFuncs, propertyFuncs)
+	// Make init() funcs
+	generateInit(specName, resourceSpecificationVersion, resourceFuncs, propertyFuncs)
 }
 
 // generateInit creates the init() function
 // that registers each resource and property
 // in a containing map
-func generateInit(resources, properties []funcs) {
+func generateInit(specName string, version string, resources, properties []funcs) {
 	var b bytes.Buffer
 	t := template.Must(template.ParseFiles(initTemplate))
 	err := t.ExecuteTemplate(&b, "template", struct {
 		Resources  []funcs // Name of the function to be created
 		Properties []funcs // Body of the function
+		SpecName   string
 	}{
 		Resources:  resources,
 		Properties: properties,
+		SpecName:   specName,
 	})
 
 	if err != nil {
 		panic(err)
 	}
-	writeFile("init", b.Bytes())
+	writeFile("init_"+specName, b.Bytes())
 }
 
 // generateResource creates a file containing a
@@ -170,10 +183,15 @@ func nameFromAWSType(name string) string {
 // spec.ResourceType
 func getResourceType(name string) (cf.ResourceType, error) {
 	resource, ok := Cfn.ResourceTypes[name]
-	if !ok {
-		return cf.ResourceType{}, errors.New("Cannot resolve resource name: " + name)
+	if ok {
+		return resource, nil
 	}
-	return resource, nil
+
+	resource, ok = Iam.ResourceTypes[name]
+	if ok {
+		return resource, nil
+	}
+	return cf.ResourceType{}, errors.New("Cannot resolve resource name: " + name)
 }
 
 // getPropertyType returns a PropertyType for a given name.
@@ -181,8 +199,13 @@ func getResourceType(name string) (cf.ResourceType, error) {
 // spec.PropertyType
 func getPropertyType(name string) (cf.PropertyType, error) {
 	property, ok := Cfn.PropertyTypes[name]
-	if !ok {
-		return cf.PropertyType{}, errors.New("Cannot resolve property name: " + name)
+	if ok {
+		return property, nil
 	}
-	return property, nil
+
+	property, ok = Iam.PropertyTypes[name]
+	if ok {
+		return property, nil
+	}
+	return cf.PropertyType{}, errors.New("Cannot resolve property name: " + name)
 }
