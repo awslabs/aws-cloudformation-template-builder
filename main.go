@@ -6,12 +6,8 @@ import (
 
 	"github.com/awslabs/aws-cloudformation-template-builder/builder"
 	"github.com/awslabs/aws-cloudformation-template-formatter/format"
+	//Drop-in replacement for flag that supports POSIX style flags
 	flag "github.com/spf13/pflag"
-)
-
-const (
-	styleJSON = "json"
-	styleYAML = "yaml"
 )
 
 const usage = `Usage: cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
@@ -40,24 +36,26 @@ func init() {
 	flag.BoolVarP(&iamFlag, "iam", "i", false, "If any resource includes an IAM policy definition, populate that too.")
 	flag.BoolVarP(&jsonFlag, "json", "j", false, "Output the template in JSON format (default: YAML).")
 }
+
 func die() {
 	fmt.Fprint(os.Stderr, usage)
 	os.Exit(1)
 }
 
 func main() {
-	//Parse the flags
 	flag.Parse()
-	//Get what ever's left after the flags have been parsed
+	//Get whatever's left after the flags have been parsed
 	resourceTypes := flag.Args()
 	if len(resourceTypes) == 0 {
 		die()
 	}
 	resources := resolveResources(resourceTypes)
+	//build the template
 	b := builder.NewCfnBuilder(bareFlag, iamFlag)
 	t, c := b.Template(resources)
 	if jsonFlag {
 		fmt.Println(format.JsonWithComments(t, c))
+		// Output YAML which is the default
 	} else {
 		fmt.Println(format.YamlWithComments(t, c))
 	}
