@@ -1,14 +1,12 @@
 package builder
 
-import "github.com/awslabs/aws-cloudformation-template-builder/spec"
-
 type CfnBuilder struct {
 	Builder
 }
 
 func NewCfnBuilder(includeOptional, buildIamPolicies bool) CfnBuilder {
 	var b CfnBuilder
-	b.Spec = spec.Cfn
+	b.Spec = CfnSpec
 	b.IncludeOptionalProperties = includeOptional
 	b.BuildIamPolicies = buildIamPolicies
 

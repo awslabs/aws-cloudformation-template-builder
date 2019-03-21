@@ -1,5 +1,5 @@
 {
-  "ResourceSpecificationVersion": "2.18.0",
+  "ResourceSpecificationVersion": "1.0.0",
   "PropertyTypes": {
       "Policy": {
           "Properties": {
