@@ -6,6 +6,7 @@ import (
 
 	"github.com/awslabs/aws-cloudformation-template-builder/builder"
 	"github.com/awslabs/aws-cloudformation-template-formatter/format"
+
 	//Drop-in replacement for flag that supports POSIX style flags
 	flag "github.com/spf13/pflag"
 )
@@ -51,7 +52,7 @@ func main() {
 	}
 	resources := resolveResources(resourceTypes)
 	//build the template
-	b := builder.NewCfnBuilder(bareFlag, iamFlag)
+	b := builder.NewCfnBuilder(!bareFlag, iamFlag)
 	t, c := b.Template(resources)
 	if jsonFlag {
 		fmt.Println(format.JsonWithComments(t, c))
