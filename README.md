@@ -1,3 +1,5 @@
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/cfn-skeleton)
+
 # AWS Cloudformation Template Builder
 
 This repository contains `cfn-skeleton`, a command line tool and Go library that consumes the published [CloudFormation specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) and generates skeleton CloudFormation templates with mandatory and optional parameters of chosen resource types pre-filled with placeholder values.
@@ -7,6 +9,8 @@ This repository contains `cfn-skeleton`, a command line tool and Go library that
 This project is licensed under the Apache 2.0 License. 
 
 ## Usage
+
+To use `cfn-skeleton`, you can clone this repository and run `go build` or download the [latest release](https://github.com/awslabs/aws-cloudformation-template-builder/releases/latest) for your operating system.
 
 ```console
 cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
