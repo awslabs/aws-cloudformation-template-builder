@@ -9,11 +9,21 @@ This repository contains `cfn-skeleton`, a command line tool and Go library that
 
 ## License
 
-This project is licensed under the Apache 2.0 License. 
+This project is licensed under the Apache 2.0 License.
+
+## Installation
+
+You can install `cfn-skeleton` in one of the following three ways:
+
+* Use the [snap package](https://snapcraft.io/cfn-skeleton)
+
+* If you have [go](https://golang.org/) installed, run the following:
+
+    `go install github.com/awslabs/aws-cloudformation-template-builder/cmd/cfn-skeleton`
+
+* Download the [latest release](https://github.com/awslabs/aws-cloudformation-template-builder/releases/latest) for your operating system.
 
 ## Usage
-
-To use `cfn-skeleton`, you can clone this repository and run `go build` or download the [latest release](https://github.com/awslabs/aws-cloudformation-template-builder/releases/latest) for your operating system.
 
 ```console
 cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
@@ -57,7 +67,7 @@ Resources:
   MyInstance:
     Type: AWS::EC2::Instance
     Properties:
-      {} 
+      {}
 ```
 
 ### Output JSON
