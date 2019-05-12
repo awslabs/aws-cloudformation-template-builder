@@ -19,6 +19,8 @@ parts:
     source: .
     plugin: go
     go-importpath: github.com/awslabs/aws-cloudformation-template-builder
+    go-packages:
+      - github.com/awslabs/aws-cloudformation-template-builder/cmd/cfn-skeleton
     build-packages:
       - gcc
     build-snaps:
@@ -26,4 +28,4 @@ parts:
 
 apps:
   cfn-skeleton:
-    command: aws-cloudformation-template-builder
+    command: cfn-skeleton
