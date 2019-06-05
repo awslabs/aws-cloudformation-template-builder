@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/aws-cloudformation/rain/format"
 	"github.com/awslabs/aws-cloudformation-template-builder/builder"
-	"github.com/awslabs/aws-cloudformation-template-formatter/format"
 
 	//Drop-in replacement for flag that supports POSIX style flags
 	flag "github.com/spf13/pflag"
