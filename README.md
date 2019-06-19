@@ -17,11 +17,11 @@ You can install `cfn-skeleton` in one of the following three ways:
 
 * Use the [snap package](https://snapcraft.io/cfn-skeleton)
 
+* Download the [latest release](https://github.com/awslabs/aws-cloudformation-template-builder/releases/latest) for your operating system.
+
 * If you have [go](https://golang.org/) installed, run the following:
 
-    `go install github.com/awslabs/aws-cloudformation-template-builder/cmd/cfn-skeleton`
-
-* Download the [latest release](https://github.com/awslabs/aws-cloudformation-template-builder/releases/latest) for your operating system.
+    `GO111MODULE=on go get github.com/awslabs/aws-cloudformation-template-builder/cmd/cfn-skeleton`
 
 ## Usage
 
