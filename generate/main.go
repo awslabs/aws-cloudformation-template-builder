@@ -60,8 +60,8 @@ func main() {
 	// Download cfn spec from AWS
 	fmt.Println("CloudFormation spec...")
 	// Due to a bug in the current published spec, we'll use a local file for now
-	//cfn = loadUrl(cfnSpecUrl)
-	cfn = loadFile(cfnSpecFn)
+	cfn = loadUrl(cfnSpecUrl)
+	//cfn = loadFile(cfnSpecFn)
 
 	// Load iam spec from local file
 	fmt.Println("Parsing IAM spec...")
