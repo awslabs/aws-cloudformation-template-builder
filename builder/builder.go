@@ -1,6 +1,8 @@
 package builder
 
-import "github.com/awslabs/aws-cloudformation-template-builder/spec"
+import (
+	"github.com/awslabs/aws-cloudformation-template-builder/spec"
+)
 
 const (
 	PolicyDocument           = "PolicyDocument"
@@ -16,6 +18,8 @@ type Builder struct {
 }
 
 var iamBuilder IamBuilder
+
+var emptyProp = spec.Property{}
 
 func init() {
 	iamBuilder = NewIamBuilder()
@@ -127,6 +131,12 @@ func (b Builder) newPropertyType(resourceType, propertyType string) (interface{}
 	}
 	if !ok {
 		panic("PTYPE NOT IMPLEMENTED: " + resourceType + "." + propertyType)
+	}
+
+	// Deal with the case that a property type is directly a plain property
+	// for example AWS::Glue::SecurityConfiguration.S3Encryptions
+	if ptSpec.Property != emptyProp {
+		return b.newProperty(resourceType, ptSpec.Property)
 	}
 
 	comments := make(map[interface{}]interface{})

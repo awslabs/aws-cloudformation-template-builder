@@ -18,6 +18,7 @@ type Spec struct {
 // PropertyType represents a propertytype node
 // in the CloudFormation specification
 type PropertyType struct {
+	Property
 	Documentation string
 	Properties    map[string]Property
 }
