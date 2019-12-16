@@ -2,6 +2,8 @@
 
 # This script will build cfn-skeleton for all platforms
 
+go generate ./...
+
 # Run tests first
 
 go vet ./... || exit 1

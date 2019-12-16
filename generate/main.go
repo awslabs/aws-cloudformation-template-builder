@@ -1,5 +1,7 @@
 package main
 
+//go:generate go run main.go
+
 import (
 	"encoding/json"
 	"fmt"
@@ -13,8 +15,8 @@ import (
 
 const (
 	cfnSpecUrl = "https://d2senuesg1djtx.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json"
-	cfnSpecFn  = "generate/CloudFormationResourceSpecification.json"
-	iamSpecFn  = "generate/IamSpecification.json"
+	cfnSpecFn  = "CloudFormationResourceSpecification.json"
+	iamSpecFn  = "IamSpecification.json"
 )
 
 func load(r io.Reader, s *spec.Spec) {
@@ -68,7 +70,7 @@ func main() {
 	iam = loadFile(iamSpecFn)
 
 	// Write out specs file
-	err := ioutil.WriteFile("builder/specs.go", []byte(fmt.Sprintf(`package builder
+	err := ioutil.WriteFile("../builder/specs.go", []byte(fmt.Sprintf(`package builder
 
 import "github.com/awslabs/aws-cloudformation-template-builder/spec"
 
