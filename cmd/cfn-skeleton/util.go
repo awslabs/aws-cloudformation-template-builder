@@ -6,11 +6,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/awslabs/aws-cloudformation-template-builder/builder"
+	"github.com/aws-cloudformation/rain/cfn/spec"
 )
 
 func resolveType(suffix string) string {
-	options := builder.CfnSpec.ResolveResource(suffix)
+	options := spec.Cfn.ResolveResource(suffix)
 
 	if len(options) == 0 {
 		fmt.Fprintf(os.Stderr, "No resource type found matching '%s'\n", suffix)

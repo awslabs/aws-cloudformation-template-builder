@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/aws-cloudformation/rain/format"
-	"github.com/awslabs/aws-cloudformation-template-builder/builder"
+	"github.com/aws-cloudformation/rain/cfn/format"
+	"github.com/aws-cloudformation/rain/cfn/spec/builder"
 
 	//Drop-in replacement for flag that supports POSIX style flags
 	flag "github.com/spf13/pflag"
@@ -54,10 +54,14 @@ func main() {
 	//build the template
 	b := builder.NewCfnBuilder(!bareFlag, iamFlag)
 	t, c := b.Template(resources)
-	if jsonFlag {
-		fmt.Println(format.JsonWithComments(t, c))
-		// Output YAML which is the default
-	} else {
-		fmt.Println(format.YamlWithComments(t, c))
+
+	options := format.Options{
+		Comments: c,
 	}
+
+	if jsonFlag {
+		options.Style = format.JSON
+	}
+
+	fmt.Println(format.Template(t, options))
 }
