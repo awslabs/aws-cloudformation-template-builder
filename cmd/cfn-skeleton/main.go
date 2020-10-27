@@ -29,12 +29,10 @@ Options:
 `
 
 var bareFlag bool
-var iamFlag bool
 var jsonFlag bool
 
 func init() {
 	flag.BoolVarP(&bareFlag, "bare", "b", false, "Produce a minimal template, omitting all optional resource properties.")
-	flag.BoolVarP(&iamFlag, "iam", "i", false, "If any resource includes an IAM policy definition, populate that too.")
 	flag.BoolVarP(&jsonFlag, "json", "j", false, "Output the template in JSON format (default: YAML).")
 }
 
@@ -52,7 +50,7 @@ func main() {
 	}
 	resources := resolveResources(resourceTypes)
 	//build the template
-	b := builder.NewCfnBuilder(!bareFlag, iamFlag)
+	b := builder.NewCfnBuilder(!bareFlag, true)
 	t, c := b.Template(resources)
 
 	options := format.Options{

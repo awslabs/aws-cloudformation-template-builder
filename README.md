@@ -38,7 +38,6 @@ cfn-skeleton [OPTIONS] [RESOURCE TYPES...]
 Options:
 
   -b, --bare  Produce a minimal template, omitting all optional resource properties.
-  -i, --iam   If any resource includes an IAM policy definition, populate that too.
   -j, --json  Output the template in JSON format (default: YAML).
   --help      Show this message and exit.
 ```
