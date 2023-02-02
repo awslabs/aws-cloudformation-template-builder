@@ -1,3 +1,11 @@
+**NOTICE:** AWS CloudFormation Template Builder is now *deprecated*.
+
+You should use [rain](https://github.com/aws-cloudformation/rain) instead. `rain build` is equivalent to `cfn-skeleton`.
+
+See [the rain build documentation](https://aws-cloudformation.github.io/rain/rain_build.html) for details.
+
+---
+
 [![GitHub version](https://badge.fury.io/gh/awslabs%2Faws-cloudformation-template-builder.svg)](https://badge.fury.io/gh/awslabs%2Faws-cloudformation-template-builder)
 [![Snap Status](https://build.snapcraft.io/badge/awslabs/aws-cloudformation-template-builder.svg)](https://build.snapcraft.io/user/awslabs/aws-cloudformation-template-builder)
 
